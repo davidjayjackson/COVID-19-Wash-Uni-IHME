@@ -12,7 +12,7 @@ db <- dbConnect(SQLite(), dbname="../COVIDDB/IHME.sqlite3")
 ##
 BMH<- read.csv("./DATA/Best_mask_hospitalization_all_locs.csv")
 summary(BMH$date)
-dbWriteTable(db, "BMH",BHM ,overwrite=TRUE)
+dbWriteTable(db, "BMH",BMH ,overwrite=TRUE)
 BMH$date <- as.Date(BMH$date)
 ##
 RFHOSP <- read.csv("./DATA/Reference_hospitalization_all_locs.csv")
