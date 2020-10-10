@@ -1,0 +1,42 @@
+---
+title: 'COVID19: Best_mask_hospitalization_all'
+author: "David Jackson"
+date: "10/9/2020"
+output: 
+  html_document: 
+    fig_width: 9
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(RSQLite)
+library(ggplot2)
+library(scales)
+```
+```{r}
+rm(list=ls())
+db <- dbConnect(SQLite(), dbname="../COVIDDB/IHME.sqlite3")
+```
+```{r}
+GLOBAL <- dbGetQuery(db,"select * from BMH where location_name ='Global'")
+GLOBAL$date <- as.Date(GLOBAL$date)
+```
+```{r}
+US <- dbGetQuery(db,"select * from BMH where location_name ='USA'")
+US$date <- as.Date(US$date)
+```
+
+## Global Analysis: Deaths
+
+```{r}
+ggplot(GLOBAL) + geom_line(aes(x=date,y=deaths_mean,col="Mean Deaths")) +
+  geom_line(aes(x=date,y=deaths_upper,col="Upper")) +
+  geom_line(aes(x=date,y=deaths_lower,col="Lower")) +
+  labs(title="Mean Deaths by Day")
+```
+```{r}
+ggplot(GLOBAL) + geom_line(aes(x=date,y=est_infections_mean,col="Confirmed")) +
+  geom_line(aes(x=date,y=est_infections_lower,col="Est Lower")) +
+  geom_line(aes(x=date,y=est_infections_upper,col="Est. Upper"))
+```
+
