@@ -16,7 +16,7 @@ BMH$date <- as.Date(BMH$date)
 summary(BMH$date)
 ##
 RFHOSP <- read.csv("./DATA/Reference_hospitalization_all_locs.csv")
-dbWriteTable(db, "RFHOsP",RFHOSP ,overwrite=TRUE)
+dbWriteTable(db, "RFHOSP",RFHOSP ,overwrite=TRUE)
 RFHOSP$date <- as.Date(RFHOSP$date)
 summary(RFHOSP$date)
 ##

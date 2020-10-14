@@ -20,10 +20,12 @@ db <- dbConnect(SQLite(), dbname="../COVIDDB/IHME.sqlite3")
 ```{r}
 GLOBAL <- dbGetQuery(db,"select * from BMH where location_name ='Global'")
 GLOBAL$date <- as.Date(GLOBAL$date)
+GLOBAL <- subset(GLOBAL,date >="2020-06-01")
 ```
 ```{r}
 US <- dbGetQuery(db,"select * from BMH where location_name ='USA'")
 US$date <- as.Date(US$date)
+US <- subset(US,date >="2020-10-01")
 ```
 
 ## Global Analysis: Deaths
@@ -40,3 +42,16 @@ ggplot(GLOBAL) + geom_line(aes(x=date,y=est_infections_mean,col="Confirmed")) +
   geom_line(aes(x=date,y=est_infections_upper,col="Est. Upper"))
 ```
 
+## US Analysis: Deaths
+
+```{r}
+ggplot(US) + geom_line(aes(x=date,y=deaths_mean,col="Mean Deaths")) +
+  geom_line(aes(x=date,y=deaths_upper,col="Upper")) +
+  geom_line(aes(x=date,y=deaths_lower,col="Lower")) +
+  labs(title="Mean Deaths by Day")
+```
+```{r}
+ggplot(US) + geom_line(aes(x=date,y=est_infections_mean,col="Confirmed")) +
+  geom_line(aes(x=date,y=est_infections_lower,col="Est Lower")) +
+  geom_line(aes(x=date,y=est_infections_upper,col="Est. Upper"))
+```

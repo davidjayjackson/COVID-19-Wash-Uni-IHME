@@ -1,0 +1,64 @@
+---
+title: "Reference Hospitals Bed and More"
+author: "David Jackson"
+date: "10/13/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(RSQLite)
+library(ggplot2)
+library(scales)
+```
+
+```{r}
+rm(list=ls())
+db <- dbConnect(SQLite(), dbname="../COVIDDB/IHME.sqlite3")
+```
+```{r}
+GLOBAL <- dbGetQuery(db,"select * from RFHOSP where location_name ='Global'")
+GLOBAL$date <- as.Date(GLOBAL$date)
+GLOBAL <- subset(GLOBAL,date >="2020-06-01")
+```
+```{r}
+US <- dbGetQuery(db,"select * from RFHOSP where location_name ='United States of America'")
+US$date <- as.Date(US$date)
+US <- subset(US,date >="2020-10-01")
+```
+
+## US Mean totals for Beds and ICU Beds
+
+```{r}
+
+ggplot(US) + geom_line(aes(x=date,y=allbed_mean)) +
+  labs(title="Mean covid beds needed by day")
+```
+```{r}
+ggplot(US) + geom_line(aes(x=date,y=ICUbed_mean)) +
+  labs(title="Mean ICU covid beds needed by day")
+```
+```{r}
+ggplot(US) + geom_line(aes(x=date,y=InvVen_mean)) +
+  labs(title="Mean invasive ventilation needed by day")
+```
+
+```{r}
+ggplot(US) + geom_line(aes(x=date,y=admis_mean)) +
+  labs(title="Mean hospital admissions by day")
+```
+
+
+```{r}
+ggplot(US) + geom_line(aes(x=date,y=admis_mean)) +
+  labs(title="Mean hospital admissions by day")
+```
+
+```{r}
+ggplot(US) + geom_line(aes(x=date,y=newICU_mean)) +
+  labs(title="Mean number of new people going to the ICU by day")
+```
+```{r}
+ggplot(US) + geom_line(aes(x=date,y=bedover_mean)) +
+  labs(title="[covid all beds needed] - ([total bed capacity] - [average all bed usage])")
+```
